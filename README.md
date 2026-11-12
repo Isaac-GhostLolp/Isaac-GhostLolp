@@ -21,9 +21,6 @@ quietly, carefully, and ready for whoever walks in at 3am.
 
 ### ❄ &nbsp;who's behind the counter
 
-<table>
-<tr>
-<td width="52%" valign="top">
 
 I'm **Isaac** — full stack developer, game dev and designer, trained as a multimedia technician. I treat software like a craft, not output: I'd rather ship one thing that feels finished than five that only work.
 
@@ -31,8 +28,6 @@ Most nights are split in two. Half goes into **production systems** — right no
 
 I also lead the multimedia track of my class, designing the selection process for future student leaders. Good systems aren't only code — they're process design too.
 
-</td>
-<td width="48%" valign="top">
 
 ```php
 final class Isaac extends Developer
@@ -51,9 +46,6 @@ final class Isaac extends Developer
 }
 ```
 
-</td>
-</tr>
-</table>
 
 <img src="./assets/pixel/divider.svg" width="100%"/>
 
@@ -131,12 +123,8 @@ final class Isaac extends Developer
 
 <div align="center">
 
-<img height="165" src="https://github-readme-stats.vercel.app/api?username=Isaac-GhostLolp&show_icons=true&hide_border=true&bg_color=060b16&title_color=67e8f9&icon_color=38bdf8&text_color=a9c4dc&ring_color=67e8f9" />
-<img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Isaac-GhostLolp&layout=compact&hide_border=true&bg_color=060b16&title_color=67e8f9&text_color=a9c4dc" />
-
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Isaac-GhostLolp&hide_border=true&background=060b16&stroke=1d3a5e&ring=67e8f9&fire=fbbf24&currStreak=67e8f9&currStreakLabel=a9c4dc&sideNums=e0f7ff&sideLabels=a9c4dc&dates=5b7a99" />
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Isaac-GhostLolp&hide_border=true&bg_color=060b16&color=a9c4dc&line=67e8f9&point=e0f7ff&area=true&area_color=38bdf8" width="100%"/>
 
 </div>
 
