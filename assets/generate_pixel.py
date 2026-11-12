@@ -489,7 +489,7 @@ LANGS = [
     ("PHP", "PHP 8", "#8b93c9", "BACKEND·DAILY"),
     ("JS", "JAVASCRIPT", "#e8cf4a", "VANILLA,NO FW"),
     ("C#", "C#", "#a68be0", "UNITY GAMEPLAY"),
-    ("GD", "GDSCRIPT", "#6ea8d8", "GODOT 4"),
+    ("TS", "TYPESCRIPT", "#4f8fd6", "ELECTRON+REACT"),
     ("SQL", "MARIADB", "#4fa3b8", "MULTI-TENANT"),
     ("</>", "HTML+CSS", "#e58a6a", "PIXEL-PERFECT"),
 ]
@@ -575,16 +575,19 @@ def shelf():
 # CARDS DE PROJETO   (EDITE AQUI — linhas de até ~42 caracteres)
 # ---------------------------------------------------------------------------
 PROJECTS = [
-    dict(file="project-ghostguard.svg", aisle="01", title="GHOSTGUARD MANAGER", status="active", label="ACTIVE DEV",
+    dict(file="project-harmony.svg", aisle="01", title="HARMONY", status="done", label="RELEASED · OPEN SOURCE", wide=True, eq=True,
+         lines=["OFFLINE MUSIC PLAYER WITH A CINEMATIC LIVE-STAGE VISUALIZER:", "SIX SHOW PACKS, CUSTOM WEB AUDIO ENGINE (10-BAND EQ, CROSSFADE),", "SYNCED & KARAOKE LYRICS. OPEN SOURCE, WINDOWS + LINUX."],
+         stack=["TYPESCRIPT", "ELECTRON", "REACT", "WEB AUDIO", "SQLITE"]),
+    dict(file="project-ghostguard.svg", aisle="02", title="GHOSTGUARD MANAGER", status="active", label="ACTIVE DEV",
          lines=["MULTI-TENANT SAAS ERP FOR SMALL BUSINESS,", "BARBERSHOPS FIRST. CUSTOM MVC FRAMEWORK,", "TIERED BILLING, FULL TENANT ISOLATION."],
          stack=["PHP 8", "MARIADB", "CUSTOM MVC", "VANILLA JS"]),
-    dict(file="project-towerdefense.svg", aisle="02", title="TOWER DEFENSE - ANIME ED.", status="wip", label="IN PROGRESS",
+    dict(file="project-towerdefense.svg", aisle="03", title="TOWER DEFENSE - ANIME ED.", status="wip", label="IN PROGRESS",
          lines=["2D TOWER DEFENSE IN UNITY 6 WITH A FULL", "SUMMON SYSTEM. SCRIPTABLEOBJECTS, EVENT-", "DRIVEN (RYAN HIPPLE), SOLID."],
          stack=["UNITY 6", "C#", "SCRIPTABLEOBJECTS"]),
-    dict(file="project-pokedex.svg", aisle="03", title="INTERACTIVE POKÉDEX", status="done", label="COMPLETE",
+    dict(file="project-pokedex.svg", aisle="04", title="INTERACTIVE POKÉDEX", status="done", label="COMPLETE",
          lines=["A PHYSICAL-DEVICE POKEDEX IN PURE HTML,", "CSS & JS: POKEAPI SPRITES, STORAGE AND", "FULL KEYBOARD & D-PAD NAVIGATION."],
          stack=["HTML", "CSS", "JAVASCRIPT", "POKEAPI"]),
-    dict(file="project-minecraft.svg", aisle="04", title="MINECRAFT SESSION CHALLENGES", status="done", label="COMPLETE",
+    dict(file="project-minecraft.svg", aisle="05", title="MINECRAFT SESSION CHALLENGES", status="done", label="COMPLETE",
          lines=["GAMIFIED GROUP SESSIONS: TIMER, PENALTY", "SEVERITY, PER-SESSION BINGO, PIXEL UI,", "ALL SAVED IN LOCALSTORAGE."],
          stack=["HTML", "CSS", "JAVASCRIPT"]),
 ]
@@ -592,7 +595,7 @@ STATUS = {"active": CYAN, "wip": WARM, "done": "#86efac"}
 
 
 def project_card(p):
-    W, H = 145, 62
+    W, H = (296 if p.get("wide") else 145), 62
     rnd = random.Random(p["aisle"])
     color = STATUS[p["status"]]
     L = Layer()
@@ -613,8 +616,8 @@ def project_card(p):
     # halo pixelado da cor do status
     halo = Layer()
     for y in range(5, 30):
-        for x in range(105, W - 3):
-            dx, dy = (x - 128) / 20, (y - 14) / 12
+        for x in range(W - 40, W - 3):
+            dx, dy = (x - (W - 17)) / 20, (y - 14) / 12
             v = dx * dx + dy * dy
             if v < 1 and bayer(x, y) < (1 - v) * .5:
                 halo.set(x, y, color)
@@ -626,21 +629,33 @@ def project_card(p):
         cx += w + 2
     bars = Layer()
     x = max(W - 38, int(cx) + 3)
-    while x < W - 8:
+    while x < W - 8 and not p.get("eq"):
         bw = rnd.choice([1, 1, 2])
         bars.rect(x, H - 13, bw, 7, ICE)
         x += bw + rnd.choice([1, 1, 2])
     lines = "".join(text(l, 7, 27 + i * 6, .5, "#a9c4dc") for i, l in enumerate(p["lines"]))
     snow_css, flakes = snow(W, H, int(p["aisle"]), layers=((18, 1, .35, 18), (6, 1, .6, 12)))
-    css = ".dot{animation:dt 1.6s steps(2) infinite}@keyframes dt{50%{opacity:.2}}.hl{animation:hl 5s steps(4) infinite}@keyframes hl{50%{opacity:.08}}" + snow_css
+    eq = ""
+    if p.get("eq"):  # equalizador de LEDs pixelados (o visualizer do Harmony)
+        cols = []
+        for i in range(18):
+            ex = W - 66 + i * 3
+            segs = "".join(
+                f'<rect x="{ex}" y="{H - 8 - k * 2}" width="2" height="1" fill="{ICE if k >= 9 else (CYAN if k >= 4 else DEEP)}"/>'
+                for k in range(11)
+            )
+            cols.append(f'<g class="eq" style="animation-duration:{rnd.uniform(.5, 1.4):.2f}s;animation-delay:-{rnd.uniform(0, 1.4):.2f}s">{segs}</g>')
+        eq = "".join(cols)
+    css = ".eq{transform-box:fill-box;transform-origin:50% 100%;animation:eq 1s steps(5) infinite alternate}@keyframes eq{from{transform:scaleY(.18)}to{transform:scaleY(1)}}"
+    css += ".dot{animation:dt 1.6s steps(2) infinite}@keyframes dt{50%{opacity:.2}}.hl{animation:hl 5s steps(4) infinite}@keyframes hl{50%{opacity:.08}}" + snow_css
     lw = text_width(p["label"], .5)
     body = f"""{L.svg()}{halo.svg(' class="hl" opacity=".25"')}
 <clipPath id="cc"><rect x="3" y="5" width="{W - 6}" height="{H - 8}"/></clipPath><g clip-path="url(#cc)">{flakes}</g>
 {text("AISLE " + p["aisle"], 7, 9, .5, MUTED)}
 <rect class="dot" x="{W - 9 - lw - 4}" y="9" width="2" height="2" fill="{color}"/>
 {text(p["label"], W - 8, 9, .5, color, "end")}
-{text(p["title"], 7, 16, .75 if text_width(p["title"], 1) > 128 else 1, ICE, neon="#13243d")}
-{lines}{"".join(chips)}{bars.svg(' opacity=".6"')}"""
+{text(p["title"], 7, 16, .75 if text_width(p["title"], 1) > W - 17 else 1, ICE, neon="#13243d")}
+{lines}{"".join(chips)}{bars.svg(' opacity=".6"')}{eq}"""
     (OUT / p["file"]).write_text(wrap(W, H, body, css, p["title"].title(), p["title"] + " — " + " ".join(p["lines"]).lower()), encoding="utf-8")
 
 

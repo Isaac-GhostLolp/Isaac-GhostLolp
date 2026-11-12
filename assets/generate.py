@@ -309,7 +309,7 @@ LANGS = [
     ("PHP", "php 8", "#8b93c9", "backend · daily"),
     ("JS", "javascript", "#e8cf4a", "vanilla, no fw"),
     ("C#", "c#", "#a68be0", "gameplay · unity"),
-    ("GD", "gdscript", "#6ea8d8", "godot 4"),
+    ("TS", "typescript", "#4f8fd6", "electron · react"),
     ("SQL", "mariadb/mysql", "#4fa3b8", "multi-tenant data"),
     ("</>", "html + css", "#e58a6a", "pixel-perfect UI"),
 ]
@@ -409,28 +409,36 @@ def shelf():
 # ---------------------------------------------------------------------------
 PROJECTS = [
     dict(
-        file="project-ghostguard.svg", aisle="01", title="GhostGuard Manager", status="active", label="ACTIVE DEVELOPMENT",
+        file="project-harmony.svg", aisle="01", title="Harmony", status="done", label="RELEASED · OPEN SOURCE",
+        wide=True, eq=True,
+        lines=["An offline music player with a cinematic live-stage visualizer — six Show Packs,",
+               "a custom Web Audio engine (10-band EQ, crossfade, gapless) and synced + karaoke lyrics.",
+               "Open source (MIT). Runs on Windows and Linux."],
+        stack=["TypeScript", "Electron", "React", "Web Audio", "SQLite"],
+    ),
+    dict(
+        file="project-ghostguard.svg", aisle="02", title="GhostGuard Manager", status="active", label="ACTIVE DEVELOPMENT",
         lines=["Multi-tenant SaaS ERP for small businesses —",
                "barbershops first. Custom MVC framework,",
                "tiered billing, full tenant isolation."],
         stack=["PHP 8", "MariaDB", "Custom MVC", "Vanilla JS"],
     ),
     dict(
-        file="project-towerdefense.svg", aisle="02", title="Tower Defense — Anime Ed.", status="wip", label="IN PROGRESS",
+        file="project-towerdefense.svg", aisle="03", title="Tower Defense — Anime Ed.", status="wip", label="IN PROGRESS",
         lines=["2D tower defense in Unity 6 with a full summon",
                "system. ScriptableObjects, event-driven",
                "architecture (Ryan Hipple), SOLID."],
         stack=["Unity 6", "C#", "ScriptableObjects"],
     ),
     dict(
-        file="project-pokedex.svg", aisle="03", title="Interactive Pokédex", status="done", label="COMPLETE",
+        file="project-pokedex.svg", aisle="04", title="Interactive Pokédex", status="done", label="COMPLETE",
         lines=["A physical-device Pokédex in pure HTML/CSS/JS:",
                "animated sprites via PokéAPI, storage, and",
                "full keyboard & D-pad navigation."],
         stack=["HTML", "CSS", "JavaScript", "PokéAPI"],
     ),
     dict(
-        file="project-minecraft.svg", aisle="04", title="Minecraft Session Challenges", status="done", label="COMPLETE",
+        file="project-minecraft.svg", aisle="05", title="Minecraft Session Challenges", status="done", label="COMPLETE",
         lines=["Gamified group sessions: countdown timer,",
                "severity-based penalties, per-session bingo,",
                "pixel-art UI, all saved in localStorage."],
@@ -440,13 +448,28 @@ PROJECTS = [
 STATUS_COLOR = {"active": CYAN, "wip": WARM, "done": "#86efac"}
 
 
+def eq_bars(x0, base, w, h, rnd):
+    """equalizador animado (o visualizer do Harmony)"""
+    n, out = 24, []
+    bw = w / n
+    for i in range(n):
+        hh = h * rnd.uniform(.45, 1)
+        out.append(
+            f'<rect class="eq" x="{x0 + i * bw:.1f}" y="{base - hh:.1f}" width="{bw * .62:.1f}" height="{hh:.1f}" rx="2" '
+            f'fill="url(#eqg)" style="animation-duration:{rnd.uniform(.45, 1.3):.2f}s;animation-delay:-{rnd.uniform(0, 1.3):.2f}s"/>'
+        )
+    return (f'<defs><linearGradient id="eqg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="{DEEP}"/>'
+            f'<stop offset=".7" stop-color="{CYAN}"/><stop offset="1" stop-color="{ICE}"/></linearGradient></defs>'
+            f'<g filter="url(#soft)" opacity=".9">{"".join(out)}</g>')
+
+
 def project_card(p):
-    W, H = 580, 250
+    W, H = (1180 if p.get("wide") else 580), 250
     rnd = random.Random(p["aisle"])
     color = STATUS_COLOR[p["status"]]
     bars = []
     x = W - 150
-    while x < W - 34:
+    while x < W - 34 and not p.get("eq"):
         bw = rnd.choice([1, 1, 2, 3])
         bars.append(f'<rect x="{x}" y="{H - 52}" width="{bw}" height="26" fill="{ICE}" opacity=".55"/>')
         x += bw + rnd.choice([1, 2, 2, 3])
@@ -477,6 +500,8 @@ def project_card(p):
   text{{font-family:{FONT}}}
   .dot{{animation:pulse 2.2s ease-in-out infinite}}@keyframes pulse{{50%{{opacity:.25}}}}
   .halo{{animation:halo 5s ease-in-out infinite}}@keyframes halo{{50%{{opacity:.05}}}}
+  .eq{{transform-box:fill-box;transform-origin:50% 100%;animation:eq 1s ease-in-out infinite alternate}}
+  @keyframes eq{{0%{{transform:scaleY(.15)}}100%{{transform:scaleY(1)}}}}
   {snow_css}
   {REDUCED}
 </style>
@@ -487,12 +512,13 @@ def project_card(p):
 </g>
 <path d="{cap}" fill="#d9eef9" opacity=".9"/>
 <text x="30" y="56" font-size="12" fill="{MUTED}" letter-spacing="2">AISLE {p['aisle']}</text>
-<circle cx="{W - 182}" cy="52" r="4" fill="{color}" class="dot" filter="url(#soft)"/>
-<text x="{W - 170}" y="56" font-size="11" fill="{color}" letter-spacing="1">{p['label']}</text>
+<circle cx="{W - 30 - len(p['label']) * 7.6 - 12:.0f}" cy="52" r="4" fill="{color}" class="dot" filter="url(#soft)"/>
+<text x="{W - 30}" y="56" font-size="11" fill="{color}" letter-spacing="1" text-anchor="end">{p['label']}</text>
 <text x="30" y="88" font-size="23" font-weight="700" fill="{ICE}" filter="url(#soft)">{esc(p['title'])}</text>
 {lines}
 {"".join(chips)}
 {"".join(bars)}
+{eq_bars(W - 290, H - 28, 250, 120, rnd) if p.get("eq") else ""}
 </svg>"""
     (OUT / p["file"]).write_text(svg, encoding="utf-8")
 

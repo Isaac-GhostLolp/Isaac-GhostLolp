@@ -51,14 +51,16 @@ final class Isaac extends Developer
 
 ### ❄ &nbsp;aisle 01 — what I'm building
 
+<a href="https://github.com/Isaac-GhostLolp/harmony"><img src="./assets/pixel/project-harmony.svg" width="100%" alt="Harmony — offline music player with a cinematic live-stage visualizer"/></a>
+
 <table>
 <tr>
-<td width="50%"><a href="https://github.com/Isaac-GhostLolp?tab=repositories"><img src="./assets/pixel/project-ghostguard.svg" width="100%" alt="GhostGuard Manager"/></a></td>
-<td width="50%"><a href="https://github.com/Isaac-GhostLolp?tab=repositories"><img src="./assets/pixel/project-towerdefense.svg" width="100%" alt="Tower Defense — Anime Edition"/></a></td>
+<td width="50%"><img src="./assets/pixel/project-ghostguard.svg" width="100%" alt="GhostGuard Manager"/></td>
+<td width="50%"><img src="./assets/pixel/project-towerdefense.svg" width="100%" alt="Tower Defense — Anime Edition"/></td>
 </tr>
 <tr>
-<td width="50%"><a href="https://github.com/Isaac-GhostLolp?tab=repositories"><img src="./assets/pixel/project-pokedex.svg" width="100%" alt="Interactive Pokédex"/></a></td>
-<td width="50%"><a href="https://github.com/Isaac-GhostLolp?tab=repositories"><img src="./assets/pixel/project-minecraft.svg" width="100%" alt="Minecraft Session Challenges"/></a></td>
+<td width="50%"><img src="./assets/pixel/project-pokedex.svg" width="100%" alt="Interactive Pokédex"/></td>
+<td width="50%"><img src="./assets/pixel/project-minecraft.svg" width="100%" alt="Minecraft Session Challenges"/></td>
 </tr>
 </table>
 
